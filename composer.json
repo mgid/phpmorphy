@@ -1,13 +1,13 @@
 {
     "name": "mgid/phpmorphy",
-    "description": "phpMorphy - morphological analyzer library for Russisan, English languages.",
+    "description": "phpMorphy - morphological analyzer library for Russian, English, German and Ukrainian languages.",
     "keywords": [
         "phpMorphy"
     ],
     "homepage": "https://github.com/mgid/phpmorphy",
     "license": "MIT",
     "require": {
-        "php": ">=7.0"
+        "php": ">=7.4"
     },
     "autoload": {
         "classmap": [
