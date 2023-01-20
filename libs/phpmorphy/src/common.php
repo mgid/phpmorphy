@@ -175,12 +175,12 @@ class phpMorphy {
         $predict_fsa,
         $options,
 
-        // variables with two underscores uses lazy paradigm, i.e. initialized at first time access
-        //$__common_morphier,
-        //$__predict_by_suf_morphier,
-        //$__predict_by_db_morphier,
-        //$__bulk_morphier,
-        //$__word_descriptor_serializer,
+        $__bulk_morphier,
+        $__predict_by_suf_morphier,
+        $__predict_by_db_morphier,
+        $__common_morphier,
+        $__word_descriptor_serializer,
+        $__grammems_provider,
 
         $helper,
         $last_prediction_type
@@ -195,6 +195,30 @@ class phpMorphy {
         } else {
             $this->initNewStyle($this->createFilesBundle($dir, $lang), $options);
         }
+
+        $this->__bulk_morphier = $this->createBulkMorphier(
+            $this->common_fsa,
+            $this->helper
+        );
+
+        $this->__predict_by_suf_morphier = $this->createPredictBySuffixMorphier(
+            $this->common_fsa,
+            $this->helper
+        );
+
+        $this->__predict_by_db_morphier = $this->createPredictByDbMorphier(
+            $this->predict_fsa,
+            $this->helper
+        );
+
+        $this->__common_morphier = $this->createCommonMorphier(
+            $this->common_fsa,
+            $this->helper
+        );
+
+        $this->__word_descriptor_serializer = $this->createWordDescriptorSerializer();
+
+        //$this->__grammems_provider = $this->createGrammemsProvider();
 
         $this->last_prediction_type = self::PREDICT_BY_NONE;
     }
@@ -675,50 +699,6 @@ class phpMorphy {
         );
 
         return (array)$options + $defaults;
-    }
-
-    function __get($name) {
-        switch($name) {
-            case '__predict_by_db_morphier':
-                $this->__predict_by_db_morphier = $this->createPredictByDbMorphier(
-                    $this->predict_fsa,
-                    $this->helper
-                );
-
-                break;
-            case '__predict_by_suf_morphier':
-                $this->__predict_by_suf_morphier = $this->createPredictBySuffixMorphier(
-                    $this->common_fsa,
-                    $this->helper
-                );
-
-                break;
-            case '__bulk_morphier':
-                $this->__bulk_morphier = $this->createBulkMorphier(
-                    $this->common_fsa,
-                    $this->helper
-                );
-
-                break;
-            case '__common_morphier':
-                $this->__common_morphier = $this->createCommonMorphier(
-                    $this->common_fsa,
-                    $this->helper
-                );
-
-                break;
-
-            case '__word_descriptor_serializer':
-                $this->__word_descriptor_serializer = $this->createWordDescriptorSerializer();
-                break;
-            case '__grammems_provider':
-                $this->__grammems_provider = $this->createGrammemsProvider();
-                break;
-            default:
-                throw new phpMorphy_Exception("Invalid prop name '$name'");
-        }
-
-        return $this->$name;
     }
 
     ////////////////////
