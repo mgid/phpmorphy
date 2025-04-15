@@ -126,7 +126,7 @@ abstract class phpMorphy_Iterator_Transform extends IteratorIterator {
 		parent::__construct($it);
 	}
 	
-	function current() {
+	function current(): mixed {
 		return $this->transformItem(parent::current(), parent::key());
 	}
 	

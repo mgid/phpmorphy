@@ -156,7 +156,7 @@ class phpMorphy_Dict_Source_Normalized_DecoratingIterator extends IteratorIterat
         $this->new_class = $newClass;
     }
 
-    function current() {
+    function current(): mixed {
         return $this->decorate(parent::current());
     }
 
